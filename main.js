@@ -29,16 +29,12 @@ const winner = () => {
       result = true;
     }
   }
-
-
-
   for (let i = 1; i < 4; i++) {
     let columnEls = document.querySelectorAll(`.column${i}`);
     if (columnEls[0].textContent !== "" && columnEls[0].textContent == columnEls[1].textContent && columnEls[1].textContent == columnEls[2].textContent) {
       result = true;
     }
   }
-
   for (let i = 1; i < 3; i++) {
     let diagonalEls = document.querySelectorAll(`.diagonal${i}`);
     if (diagonalEls[0].textContent !== "" && diagonalEls[0].textContent == diagonalEls[1].textContent && diagonalEls[1].textContent == diagonalEls[2].textContent) {
