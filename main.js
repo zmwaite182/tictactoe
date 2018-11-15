@@ -1,24 +1,15 @@
-//Intializing cells and it is equal/ getting all of the td in the html
-let cells = document.querySelectorAll('td');
-//Intializing cellsArray and it is putting cells in an array
-let cellsArray = Array.from(cells);
-//Intializing P1, P2 and turn with number values
-let p1 = 0;
-let p2 = 1;
-let turn = 0;
-
 //Creating a function called pita and cell is the argument
 const pita = (cell) => {
   //If the content within the cell is precisly equals a string of nothing
     if (cell.textContent === '') {
       //If turn which is equal to zero and the remainder after dividing by two is precisely equal to 0
-      if (turn % 2 === p1) {
+      if (turn % 2 === 0) {
         //Intializing letter and it is equal to the string of X and it was created by using createTextNode
         let letter = document.createTextNode('X');
         //This is using the argument of cell and adding it to the cell which is adding an X
         cell.appendChild(letter);
         //If turn which is equal to zero and the remaider after dividing by two precisely equals to 1
-      } else if (turn % 2 === p2) {
+      } else if (turn % 2 === 1) {
         //Intializing letter and in this case it equals a string of O and it was created by using createTextNode
         let letter = document.createTextNode('O');
         //This is using the argument of cell and adding it to the cell which is adding an O
@@ -67,9 +58,69 @@ const winner = () => {
       result = true;
     }
   }
-  //If nothing comes from the loops above, so in terms a stalemate it will still return false
-  return result;
+
+//If there is a win, and it is an even turn, O wins
+  if (result == true && turn % 2 == 0) {
+    //creates paragraph element
+    winPara = document.createElement('p');
+    //creates text node with O victory text
+    winText = document.createTextNode('O Wins!');
+    //styles paragraph element
+    winPara.style.cssText ="position: absolute; bottom: 5%";
+    //attaches text node to element
+    winPara.appendChild(winText);
+    //attaches p element to body
+    document.body.appendChild(winPara);
+    //if there is a win but it is an odd turn, X wins
+  } else if (result == true && turn % 2 == 1) {
+    winPara = document.createElement('p');
+    winText = document.createTextNode('X Wins!');
+    winPara.style.cssText ="position: absolute; bottom: 5%";
+    winPara.appendChild(winText);
+    document.body.appendChild(winPara);
+    //If it reaches turn 9 without a winner, Stalemate!
+  } else if (turn == 9){
+    winPara = document.createElement('p');
+    winText = document.createTextNode('Stalemate!');
+    winPara.style.cssText ="position: absolute; bottom: 5%";
+    winPara.appendChild(winText);
+    document.body.appendChild(winPara);
+  }
 }
+
+const reset = () => {
+  for (let i of document.querySelectorAll('p')) {
+    if (document.body.contains(winPara)) {
+      document.body.removeChild(winPara);
+    }
+    removeChildren(i);
+  }
+
+  for (let cell of cells) {
+    removeChildren(cell);
+  }
+  turn = 0;
+}
+
+const removeChildren = (parentNode) => {
+  while (parentNode.firstChild) {
+    parentNode.removeChild(parentNode.firstChild);
+  }
+}
+
+
+//Intializing cells and it is equal/ getting all of the td in the html
+let cells = document.querySelectorAll('td');
+//Intializing cellsArray and it is putting cells in an array
+let cellsArray = Array.from(cells);
+//Intializing turn with a number value
+let turn = 0;
+//variables to be used in the winner function
+let winPara;
+let winText;
+//initializes button variable and adds event listener for reset function
+let button = document.getElementById('button1')
+button.addEventListener('click', reset);
 
 //This sets up a loop that initializes i to equal 0 and it will go until it is at it's max of being less than the length of the cellsArray and it will add 1 everythime through the loop.
 for(let i = 0; i < cellsArray.length; i++) {
@@ -79,5 +130,6 @@ for(let i = 0; i < cellsArray.length; i++) {
   cell.addEventListener('click', () => {
     //This calls the pita function that is used for the x's and o's in tic tac toe. And cell is the argument in the pita function
     pita(cell);
+    winner();
   });
 }
